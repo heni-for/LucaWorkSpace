@@ -554,37 +554,34 @@ const SidebarMenuButton = React.forwardRef<
     },
     ref
   ) => {
-    const Comp = asChild ? Slot : "button"
     const { isMobile, state } = useSidebar()
+    const Comp = asChild ? Slot : "button"
 
     const button = (
-      <Comp
-        ref={ref}
-        data-sidebar="menu-button"
-        data-size={size}
-        data-active={isActive}
-        className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
-        {...props}
-      >
-        {children}
-      </Comp>
-    )
+        <Comp
+          ref={ref}
+          data-sidebar="menu-button"
+          data-size={size}
+          data-active={isActive}
+          className={cn(sidebarMenuButtonVariants({ variant, size, className }))}
+          {...props}
+        >
+          {children}
+        </Comp>
+    );
 
-    if (!tooltip) {
-      return button
+    if (!tooltip || isMobile || state === 'expanded') {
+      return button;
     }
 
-    const tooltipContent = typeof tooltip === 'string' ? { children: tooltip } : tooltip;
+    const tooltipContent = typeof tooltip === 'string' ? { children: <p>{tooltip}</p> } : tooltip;
 
     return (
       <Tooltip>
-        <TooltipTrigger asChild>
-          {button}
-        </TooltipTrigger>
+        <TooltipTrigger asChild>{button}</TooltipTrigger>
         <TooltipContent
           side="right"
           align="center"
-          hidden={state !== "collapsed" || isMobile}
           {...tooltipContent}
         />
       </Tooltip>
@@ -592,6 +589,7 @@ const SidebarMenuButton = React.forwardRef<
   }
 )
 SidebarMenuButton.displayName = "SidebarMenuButton"
+
 
 const SidebarMenuAction = React.forwardRef<
   HTMLButtonElement,
@@ -762,3 +760,5 @@ export {
   SidebarTrigger,
   useSidebar,
 }
+
+    
