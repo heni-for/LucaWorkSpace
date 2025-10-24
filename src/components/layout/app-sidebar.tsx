@@ -23,6 +23,9 @@ import {
   Settings,
   Bot,
   LifeBuoy,
+  PenSquare,
+  FolderKanban,
+  Users
 } from 'lucide-react';
 import { Button } from '../ui/button';
 
@@ -83,6 +86,24 @@ export function AppSidebar() {
             <SidebarMenuButton href="/calendar" isActive={isActive('/calendar')} tooltip="Calendar">
               <Calendar />
               <span>Calendar</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+           <SidebarMenuItem>
+            <SidebarMenuButton href="/whiteboard" isActive={isActive('/whiteboard')} tooltip="Whiteboard">
+              <PenSquare />
+              <span>Whiteboard</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton href="/documents" isActive={isActive('/documents')} tooltip="Documents">
+              <FolderKanban />
+              <span>Documents</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+           <SidebarMenuItem>
+            <SidebarMenuButton href="/team" isActive={isActive('/team')} tooltip="Team">
+              <Users />
+              <span>Team</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
