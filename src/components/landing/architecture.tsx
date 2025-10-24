@@ -1,6 +1,6 @@
 "use client";
 
-import { BrainCircuit, Code, Database, MonitorSmartphone, Server, Settings } from "lucide-react";
+import { BrainCircuit, Code, Database, MonitorSmartphone, Server, Settings, ShieldCheck } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const techStack = {
@@ -12,28 +12,30 @@ const techStack = {
             "Language: TypeScript 5",
             "UI Library: React 18.3",
             "Styling: Tailwind CSS + ShadCN UI",
-            "Design System: Plus Jakarta Sans",
+            "State Management: Zustand",
             "Modes: Dark/Light themes",
             "Responsive: Mobile, tablet, desktop",
         ],
     },
     backend: {
         icon: Server,
-        title: "Backend",
+        title: "Backend & Database",
         items: [
             "Cloud: Firebase (App Hosting, Functions)",
-            "Database: Cloud Firestore",
+            "Database: Cloud Firestore (NoSQL)",
+            "Scalability: Multi-region support",
             "Auth System: Firebase Authentication",
-            "Security: Firebase Security Rules",
-            "AI Layer: Google Genkit & Gemini",
+            "Security: Granular Firestore Security Rules",
+            "Deployment: CI/CD via GitHub Actions",
         ],
     },
     ai: {
         icon: BrainCircuit,
-        title: "AI & Voice",
+        title: "AI & Voice Engine",
         items: [
             "Generative AI: Google Gemini Models",
             "AI Orchestration: Google Genkit",
+            "Voice: Web Speech API & TTS",
             "Multilingual Support: Derja, French, English",
             "Features: Summarization, Classification, Voice",
         ],
@@ -41,7 +43,7 @@ const techStack = {
 };
 
 const devTools = {
-    title: "Development Environment",
+    title: "DevOps & Tooling",
     icon: Settings,
     items: [
         "Node.js 20 LTS",
@@ -49,24 +51,26 @@ const devTools = {
         "Visual Studio Code",
         "Firebase Local Emulator Suite",
         "Genkit Developer UI",
-        "Postman",
+        "Postman for API testing",
         "Git + GitHub",
-        "Figma",
+        "Figma for design collaboration",
     ],
 }
 
 const projectStructureCode = `
 luca-platform/
 ├── src/
-│   ├── app/                 # Next.js App Router
-│   ├── components/          # Reusable UI components
-│   ├── lib/                 # Utilities & data
-│   ├── firebase/            # Firebase config & hooks
+│   ├── app/                 # Next.js App Router (Pages & Layouts)
+│   ├── components/          # Reusable UI components (ShadCN)
+│   ├── lib/                 # Utilities, data, type definitions
+│   ├── firebase/            # Firebase config, hooks, and services
+│   ├── store/               # Zustand global state management
 │   └── ai/                  # Genkit flows & AI logic
 │
-├── public/                  # Static assets
+├── public/                  # Static assets (images, fonts)
 │
-└── firebase.json            # Firebase deployment config
+├── firebase.json            # Firebase deployment config
+└── backend.json             # Data structure definitions
 `.trim();
 
 
@@ -74,9 +78,9 @@ export function LandingArchitecture() {
     return (
         <section id="architecture" className="container mx-auto px-4 py-16">
             <div className="text-center">
-                <h2 className="font-headline text-3xl font-bold md:text-4xl">Architecture & Technology</h2>
+                <h2 className="font-headline text-3xl font-bold md:text-4xl">Built for Scale, Security & Intelligence</h2>
                 <p className="mt-4 text-lg text-muted-foreground">
-                    A robust, scalable, and modern stack built for performance and intelligence on Google Cloud.
+                    A robust, enterprise-grade stack on Google Cloud, designed to serve millions of users.
                 </p>
             </div>
             <div className="mt-12 grid gap-8 md:grid-cols-3">

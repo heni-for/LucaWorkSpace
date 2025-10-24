@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { Bot, Mic, MicOff } from 'lucide-react';
+import { Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Tooltip,
@@ -9,16 +8,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { useVoiceAssistant } from './voice-assistant-provider';
 
-// Note: Full Web Speech API implementation is complex and browser-dependent.
-// This is a placeholder UI to demonstrate the feature.
+
 export function VoiceAssistantTrigger() {
-  const [isListening, setIsListening] = useState(false);
-
-  const toggleListening = () => {
-    setIsListening(!isListening);
-    // In a real app, you would start/stop the Web Speech API here.
-  };
+  const { isListening, open, toggleListening } = useVoiceAssistant();
 
   return (
     <TooltipProvider>
@@ -27,7 +21,7 @@ export function VoiceAssistantTrigger() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={toggleListening}
+            onClick={open}
             className={`relative ${isListening ? 'text-primary' : ''}`}
           >
             <Bot className="h-5 w-5" />
