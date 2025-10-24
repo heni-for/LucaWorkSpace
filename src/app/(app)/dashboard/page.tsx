@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Card,
   CardContent,
@@ -11,6 +13,7 @@ import { ArrowUpRight, Lightbulb, Bot, CheckCircle, Mail, Calendar as CalendarIc
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import { tasks, emails, calendarEvents } from "@/lib/data";
+import React from "react";
 
 const getGreeting = () => {
     const hour = new Date().getHours();
@@ -20,7 +23,12 @@ const getGreeting = () => {
 }
 
 export default function DashboardPage() {
-    const greeting = getGreeting();
+    const [greeting, setGreeting] = React.useState('');
+
+    React.useEffect(() => {
+        setGreeting(getGreeting());
+    }, []);
+    
     const unreadEmails = emails.filter(e => !e.read).length;
     const tasksDone = tasks.filter(t => t.status === 'Done').length;
     const taskProgress = (tasksDone / tasks.length) * 100;
@@ -28,7 +36,7 @@ export default function DashboardPage() {
   return (
     <div className="flex-1 space-y-4">
         <PageHeader 
-            title={`${greeting}, Luca`}
+            title={greeting ? `${greeting}, Luca` : 'Welcome, Luca'}
             description="Here’s your productivity snapshot for today."
             action={<Button>
                 <Bot className="mr-2 h-4 w-4" /> Ask LUCA
