@@ -10,6 +10,8 @@ import {
   SidebarMenuButton,
   SidebarContent,
   SidebarFooter,
+  SidebarTrigger,
+  SidebarRail
 } from '@/components/ui/sidebar';
 import {
   LayoutDashboard,
@@ -22,6 +24,7 @@ import {
   Bot,
   LifeBuoy,
 } from 'lucide-react';
+import { Button } from '../ui/button';
 
 const LucaLogo = () => (
     <div className="flex items-center gap-2 font-headline text-lg font-semibold text-primary">
@@ -32,21 +35,25 @@ const LucaLogo = () => (
 
 export function AppSidebar() {
   const pathname = usePathname();
-  const isActive = (path: string) => pathname === path;
+  const isActive = (path: string) => pathname.startsWith(path);
 
   return (
-    <Sidebar side="left" variant="floating" collapsible="icon" className="border-r">
-      <SidebarHeader>
-        <div className="flex h-10 items-center justify-center px-2 group-data-[collapsible=icon]:h-8 group-data-[collapsible=icon]:px-0">
+    <Sidebar side="left" variant="inset" collapsible="icon" className="group/sidebar">
+      <SidebarHeader className='p-4'>
+        <div className="flex h-10 items-center justify-between">
           <div className="group-data-[collapsible=icon]:hidden">
             <LucaLogo />
           </div>
           <div className="hidden group-data-[collapsible=icon]:block">
-            <Bot className="h-6 w-6 text-primary" />
+             <Bot className="h-7 w-7 text-primary" />
           </div>
+           <SidebarTrigger asChild className="group-data-[collapsible=icon]:hidden">
+            <Button variant="ghost" size="icon" className='h-7 w-7' />
+          </SidebarTrigger>
         </div>
       </SidebarHeader>
-      <SidebarContent className="p-2">
+      <SidebarRail />
+      <SidebarContent className="p-4">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton href="/dashboard" isActive={isActive('/dashboard')} tooltip="Dashboard">
@@ -86,7 +93,7 @@ export function AppSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter className="p-2">
+      <SidebarFooter className="p-4">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton href="#" tooltip="Help">
