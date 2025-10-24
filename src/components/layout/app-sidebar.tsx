@@ -35,7 +35,7 @@ export function AppSidebar() {
   const isActive = (path: string) => pathname === path;
 
   return (
-    <Sidebar side="left" collapsible="icon" className="border-r border-sidebar-border/50">
+    <Sidebar side="left" variant="floating" collapsible="icon" className="border-r">
       <SidebarHeader>
         <div className="flex h-10 items-center justify-center px-2 group-data-[collapsible=icon]:h-8 group-data-[collapsible=icon]:px-0">
           <div className="group-data-[collapsible=icon]:hidden">

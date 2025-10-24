@@ -12,14 +12,14 @@ export default function AppLayout({
     <VoiceAssistantProvider>
       <SidebarProvider>
         <AppSidebar />
-        <div className="flex flex-col">
-          <AppHeader />
-          <SidebarInset>
+        <SidebarInset>
+            <div className="flex flex-col">
+              <AppHeader />
               <main className="flex-1">
                   {children}
               </main>
-          </SidebarInset>
-        </div>
+            </div>
+        </SidebarInset>
       </SidebarProvider>
     </VoiceAssistantProvider>
   );
