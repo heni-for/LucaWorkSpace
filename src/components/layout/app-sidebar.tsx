@@ -10,8 +10,6 @@ import {
   SidebarMenuButton,
   SidebarContent,
   SidebarFooter,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
 } from '@/components/ui/sidebar';
 import {
   LayoutDashboard,
@@ -51,72 +49,56 @@ export function AppSidebar() {
       <SidebarContent className="p-2">
         <SidebarMenu>
           <SidebarMenuItem>
-            <Link href="/dashboard" passHref>
-              <SidebarMenuButton asChild isActive={isActive('/dashboard')} tooltip="Dashboard">
-                <LayoutDashboard />
-                <span>Dashboard</span>
-              </SidebarMenuButton>
-            </Link>
+            <SidebarMenuButton href="/dashboard" isActive={isActive('/dashboard')} tooltip="Dashboard">
+              <LayoutDashboard />
+              <span>Dashboard</span>
+            </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <Link href="/mail" passHref>
-              <SidebarMenuButton asChild isActive={isActive('/mail')} tooltip="Mail">
-                <Mail />
-                <span>Mail</span>
-              </SidebarMenuButton>
-            </Link>
+            <SidebarMenuButton href="/mail" isActive={isActive('/mail')} tooltip="Mail">
+              <Mail />
+              <span>Mail</span>
+            </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <Link href="/tasks" passHref>
-              <SidebarMenuButton asChild isActive={isActive('/tasks')} tooltip="Tasks">
-                <ListChecks />
-                <span>Tasks</span>
-              </SidebarMenuButton>
-            </Link>
+            <SidebarMenuButton href="/tasks" isActive={isActive('/tasks')} tooltip="Tasks">
+              <ListChecks />
+              <span>Tasks</span>
+            </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <Link href="/notes" passHref>
-              <SidebarMenuButton asChild isActive={isActive('/notes')} tooltip="Notes">
-                <FileText />
-                <span>Notes</span>
-              </SidebarMenuButton>
-            </Link>
+            <SidebarMenuButton href="/notes" isActive={isActive('/notes')} tooltip="Notes">
+              <FileText />
+              <span>Notes</span>
+            </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <Link href="/calendar" passHref>
-              <SidebarMenuButton asChild isActive={isActive('/calendar')} tooltip="Calendar">
-                <Calendar />
-                <span>Calendar</span>
-              </SidebarMenuButton>
-            </Link>
+            <SidebarMenuButton href="/calendar" isActive={isActive('/calendar')} tooltip="Calendar">
+              <Calendar />
+              <span>Calendar</span>
+            </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <Link href="/reports" passHref>
-              <SidebarMenuButton asChild isActive={isActive('/reports')} tooltip="Reports">
-                <LineChart />
-                <span>Reports</span>
-              </SidebarMenuButton>
-            </Link>
+            <SidebarMenuButton href="/reports" isActive={isActive('/reports')} tooltip="Reports">
+              <LineChart />
+              <span>Reports</span>
+            </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter className="p-2">
         <SidebarMenu>
           <SidebarMenuItem>
-            <Link href="#" passHref>
-              <SidebarMenuButton asChild tooltip="Help">
-                <LifeBuoy />
-                <span>Help</span>
-              </SidebarMenuButton>
-            </Link>
+            <SidebarMenuButton href="#" tooltip="Help">
+              <LifeBuoy />
+              <span>Help</span>
+            </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <Link href="#" passHref>
-              <SidebarMenuButton asChild tooltip="Settings">
-                <Settings />
-                <span>Settings</span>
-              </SidebarMenuButton>
-            </Link>
+            <SidebarMenuButton href="#" tooltip="Settings">
+              <Settings />
+              <span>Settings</span>
+            </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

@@ -2,6 +2,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { Slot } from "@radix-ui/react-slot"
 import { VariantProps, cva } from "class-variance-authority"
 import { PanelLeft } from "lucide-react"
@@ -534,17 +535,22 @@ const sidebarMenuButtonVariants = cva(
   }
 )
 
+type SidebarMenuButtonProps = (
+  | (React.ComponentProps<typeof Link> & { href: string; asChild?: never })
+  | (React.ComponentProps<"button"> & { href?: never; asChild?: boolean })
+) & {
+  isActive?: boolean
+  tooltip?: string | React.ComponentProps<typeof TooltipContent>
+} & Omit<VariantProps<typeof sidebarMenuButtonVariants>, "children"> & {
+    children?: React.ReactNode
+  }
+
 const SidebarMenuButton = React.forwardRef<
-  HTMLButtonElement,
-  React.ComponentProps<"button"> & {
-    asChild?: boolean
-    isActive?: boolean
-    tooltip?: string | React.ComponentProps<typeof TooltipContent>
-  } & VariantProps<typeof sidebarMenuButtonVariants>
+  HTMLButtonElement | HTMLAnchorElement,
+  SidebarMenuButtonProps
 >(
   (
     {
-      asChild = false,
       isActive = false,
       variant = "default",
       size = "default",
@@ -556,54 +562,44 @@ const SidebarMenuButton = React.forwardRef<
     ref
   ) => {
     const { isMobile, state } = useSidebar()
-    const Comp = asChild ? Slot : "button"
 
-    const button = (
-      <Comp
-        ref={ref}
-        data-sidebar="menu-button"
-        data-size={size}
-        data-active={isActive}
-        className={cn(sidebarMenuButtonVariants({ variant, size, className }))}
-        {...props}
-      >
-        {children}
-      </Comp>
-    );
+    const commonProps = {
+      "data-sidebar": "menu-button",
+      "data-size": size,
+      "data-active": isActive,
+      className: cn(sidebarMenuButtonVariants({ variant, size, className })),
+    }
 
-    if (asChild) {
-      if (!tooltip || isMobile || state === 'expanded') {
-        return button;
-      }
-      const tooltipContentProps = typeof tooltip === 'string' ? { children: <p>{tooltip}</p> } : tooltip;
-      return (
-        <Tooltip>
-          <TooltipTrigger asChild>{button}</TooltipTrigger>
-          <TooltipContent
-            side="right"
-            align="center"
-            {...tooltipContentProps}
-          />
-        </Tooltip>
+    const buttonContent =
+      typeof props.href === "string" ? (
+        <Link
+          ref={ref as React.Ref<HTMLAnchorElement>}
+          {...(props as React.ComponentProps<typeof Link>)}
+          {...commonProps}
+        >
+          {children}
+        </Link>
+      ) : (
+        <button
+          ref={ref as React.Ref<HTMLButtonElement>}
+          {...(props as React.ComponentProps<"button">)}
+          {...commonProps}
+        >
+          {children}
+        </button>
       )
+
+    if (!tooltip || isMobile || state === "expanded") {
+      return buttonContent
     }
 
-    if (!tooltip || isMobile || state === 'expanded') {
-      return button;
-    }
-
-    const tooltipContentProps = typeof tooltip === 'string' ? { children: <p>{tooltip}</p> } : tooltip;
+    const tooltipContentProps =
+      typeof tooltip === "string" ? { children: <p>{tooltip}</p> } : tooltip
 
     return (
       <Tooltip>
-        <TooltipTrigger asChild>
-          {button}
-        </TooltipTrigger>
-        <TooltipContent
-          side="right"
-          align="center"
-          {...tooltipContentProps}
-        />
+        <TooltipTrigger asChild>{buttonContent}</TooltipTrigger>
+        <TooltipContent side="right" align="center" {...tooltipContentProps} />
       </Tooltip>
     )
   }
@@ -780,5 +776,3 @@ export {
   SidebarTrigger,
   useSidebar,
 }
-
-    
