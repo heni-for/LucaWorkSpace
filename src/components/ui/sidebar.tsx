@@ -577,9 +577,27 @@ const SidebarMenuButton = React.forwardRef<
       }
     }
 
+    if (asChild) {
+      return (
+        <Tooltip>
+          <TooltipTrigger asChild>{button}</TooltipTrigger>
+          <TooltipContent
+            side="right"
+            align="center"
+            hidden={state !== "collapsed" || isMobile}
+            {...tooltip}
+          />
+        </Tooltip>
+      )
+    }
+
     return (
       <Tooltip>
-        <TooltipTrigger asChild>{button}</TooltipTrigger>
+        <TooltipTrigger asChild>
+          {/* We need to wrap the button in a div because TooltipTrigger 
+          with asChild expects a single child that can accept a ref. */}
+          <div>{button}</div>
+        </TooltipTrigger>
         <TooltipContent
           side="right"
           align="center"
