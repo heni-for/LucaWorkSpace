@@ -44,6 +44,8 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { emailSummaryAndReplySuggestions, classifyEmail } from '@/ai/flows';
+import type { EmailSummaryAndReplySuggestionsOutput } from '@/ai/flows/email-summary-and-reply-suggestions';
+import type { ClassifyEmailOutput } from '@/ai/flows/email-classification-and-priority';
 import type { Email } from '@/lib/data';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -51,15 +53,8 @@ interface MailDisplayProps {
   mail: Email | null;
 }
 
-type AIResult = {
-  summary: string;
-  category: string;
-  priority: string;
-  replySuggestions: {
-    derja: string;
-    french: string;
-    english: string;
-  };
+type AIResult = ClassifyEmailOutput & {
+  replySuggestions: EmailSummaryAndReplySuggestionsOutput['replySuggestions'];
 };
 
 export function MailDisplay({ mail }: MailDisplayProps) {
@@ -79,7 +74,7 @@ export function MailDisplay({ mail }: MailDisplayProps) {
         ]);
 
         setAiResult({
-          summary: summaryResult.summary,
+          summary: classificationResult.summary,
           category: classificationResult.category,
           priority: classificationResult.priority,
           replySuggestions: summaryResult.replySuggestions,
