@@ -118,3 +118,49 @@ export const notes: Note[] = [
     {id: '2', title: 'Ideas for LUCA v2', content: '1. Gamification elements.\n2. Deeper calendar integrations.\n3. Offline mode for tasks & notes.', lastUpdated: 'Yesterday', color: 'bg-yellow-100 dark:bg-yellow-900/30'},
     {id: '3', title: 'Derja Voice Commands List', content: '"زيد تاسك جديدة", "شنوة عندي اليوم؟", "اقرا آخر إيميل"...', lastUpdated: '3 days ago', color: 'bg-green-100 dark:bg-green-900/30'},
 ];
+
+export type Document = {
+  id: string;
+  title: string;
+  createdAt: string;
+  author: {
+    name: string;
+    avatar: string;
+  };
+};
+
+export const documents: Document[] = [
+  { id: '1', title: 'Project Phoenix: Technical Specification', createdAt: '2 days ago', author: { name: 'Amira Gharbi', avatar: 'AG' } },
+  { id: '2', title: 'Q3 2025 Marketing Strategy', createdAt: '5 days ago', author: { name: 'Karim Trabelsi', avatar: 'KT' } },
+  { id: '3', title: 'Onboarding Guide for New Engineers', createdAt: '1 week ago', author: { name: 'Luca User', avatar: 'LU' } },
+  { id: '4', title: 'API Documentation v1.2', createdAt: '2 weeks ago', author: { name: 'Amira Gharbi', avatar: 'AG' } },
+];
+
+export type Whiteboard = {
+  id: string;
+  title: string;
+  lastModified: string;
+  thumbnailUrl: string;
+};
+
+export const whiteboards: Whiteboard[] = [
+  { id: '1', title: 'User Flow - AI Assistant', lastModified: '3 hours ago', thumbnailUrl: 'https://picsum.photos/seed/wb1/600/400' },
+  { id: '2', title: 'Mobile App Redesign Brainstorm', lastModified: 'Yesterday', thumbnailUrl: 'https://picsum.photos/seed/wb2/600/400' },
+  { id: '3', title: 'Q4 Roadmap Planning', lastModified: '4 days ago', thumbnailUrl: 'https://picsum.photos/seed/wb3/600/400' },
+];
+
+export type TeamMember = {
+  id: string;
+  name: string;
+  email: string;
+  avatar: string;
+  role: 'Owner' | 'Admin' | 'Member';
+  status: 'Active' | 'Pending';
+};
+
+export const teamMembers: TeamMember[] = [
+  { id: '1', name: 'Luca User', email: 'user@luca-platform.com', avatar: 'LU', role: 'Owner', status: 'Active' },
+  { id: '2', name: 'Amira Gharbi', email: 'amira.gharbi@example.com', avatar: 'AG', role: 'Admin', status: 'Active' },
+  { id: '3', name: 'Karim Trabelsi', email: 'karim.trabelsi@example.com', avatar: 'KT', role: 'Member', status: 'Active' },
+  { id: '4', name: 'Selma Bouzid', email: 'selma.bouzid@example.com', avatar: 'SB', role: 'Member', status: 'Pending' },
+];

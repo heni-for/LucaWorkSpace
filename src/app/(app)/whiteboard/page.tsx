@@ -1,10 +1,21 @@
 import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
+import { MoreHorizontal, PlusCircle } from "lucide-react";
+import { whiteboards } from "@/lib/data";
 import {
     Card,
-    CardContent
-  } from "@/components/ui/card"
+    CardContent,
+    CardFooter,
+    CardHeader,
+    CardTitle
+} from "@/components/ui/card"
+import Image from "next/image";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function WhiteboardPage() {
     return (
@@ -19,15 +30,41 @@ export default function WhiteboardPage() {
                     </Button>
                 }
             />
-            <div className="p-4 lg:p-6 pt-0">
-                <Card className="h-[calc(100vh-10rem)]">
-                    <CardContent className="p-4 h-full flex items-center justify-center">
-                        <div className="text-center text-muted-foreground">
-                            <h3 className="text-lg font-semibold">Whiteboard coming soon</h3>
-                            <p className="text-sm">Start a new board to begin visualizing your ideas.</p>
-                        </div>
-                    </CardContent>
-                </Card>
+            <div className="p-4 lg:p-6 pt-0 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {whiteboards.map((board) => (
+                    <Card key={board.id}>
+                        <CardHeader className="p-0">
+                           <Image 
+                             src={board.thumbnailUrl}
+                             alt={board.title}
+                             width={600}
+                             height={400}
+                             className="rounded-t-lg object-cover aspect-[3/2]"
+                             data-ai-hint="whiteboard abstract"
+                           />
+                        </CardHeader>
+                        <CardContent className="p-4">
+                            <CardTitle className="text-lg">{board.title}</CardTitle>
+                        </CardContent>
+                        <CardFooter className="flex justify-between items-center p-4 pt-0">
+                            <p className="text-sm text-muted-foreground">
+                                Modified {board.lastModified}
+                            </p>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button size="icon" variant="ghost">
+                                        <MoreHorizontal className="h-4 w-4" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent>
+                                    <DropdownMenuItem>Rename</DropdownMenuItem>
+                                    <DropdownMenuItem>Duplicate</DropdownMenuItem>
+                                    <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </CardFooter>
+                    </Card>
+                ))}
             </div>
         </div>
     )
