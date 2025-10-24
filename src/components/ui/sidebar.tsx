@@ -575,18 +575,15 @@ const SidebarMenuButton = React.forwardRef<
       return button;
     }
 
-    const tooltipContent = typeof tooltip === 'string' ? { children: <p>{tooltip}</p> } : tooltip;
+    const tooltipContentProps = typeof tooltip === 'string' ? { children: <p>{tooltip}</p> } : tooltip;
 
-    // The TooltipTrigger expects a single child, so we pass the button as a child.
-    // If asChild is true on TooltipTrigger, it will merge its props with the button,
-    // which is the desired behavior.
     return (
       <Tooltip>
         <TooltipTrigger asChild>{button}</TooltipTrigger>
         <TooltipContent
           side="right"
           align="center"
-          {...tooltipContent}
+          {...tooltipContentProps}
         />
       </Tooltip>
     )
