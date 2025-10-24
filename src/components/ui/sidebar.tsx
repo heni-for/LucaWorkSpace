@@ -1,3 +1,4 @@
+
 "use client"
 
 import * as React from "react"
@@ -570,6 +571,23 @@ const SidebarMenuButton = React.forwardRef<
       </Comp>
     );
 
+    if (asChild) {
+      if (!tooltip || isMobile || state === 'expanded') {
+        return button;
+      }
+      const tooltipContentProps = typeof tooltip === 'string' ? { children: <p>{tooltip}</p> } : tooltip;
+      return (
+        <Tooltip>
+          <TooltipTrigger asChild>{button}</TooltipTrigger>
+          <TooltipContent
+            side="right"
+            align="center"
+            {...tooltipContentProps}
+          />
+        </Tooltip>
+      )
+    }
+
     if (!tooltip || isMobile || state === 'expanded') {
       return button;
     }
@@ -578,7 +596,9 @@ const SidebarMenuButton = React.forwardRef<
 
     return (
       <Tooltip>
-        <TooltipTrigger asChild>{button}</TooltipTrigger>
+        <TooltipTrigger asChild>
+          {button}
+        </TooltipTrigger>
         <TooltipContent
           side="right"
           align="center"
@@ -760,3 +780,5 @@ export {
   SidebarTrigger,
   useSidebar,
 }
+
+    
