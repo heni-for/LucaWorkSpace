@@ -1,6 +1,6 @@
 "use client";
 
-import { Award, Cloud, LineChart, ShieldCheck } from 'lucide-react';
+import { Award, Cloud, LineChart, ShieldCheck, TrendingUp } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -8,45 +8,43 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 const scalabilityPhases = [
   {
     value: 'phase1',
-    title: 'Phase 1 – MVP (0–2,000 users)',
+    title: 'Phase 1 – Launch (0 – 10,000 users)',
     items: [
-      'Host web app on Vercel',
-      'MongoDB Atlas (free or shared tier)',
-      'Azure TTS (limited usage)',
-      'Gmail API for email operations',
-      'Cost ≈ 20–30 DT / user / month (max)',
+      'Hosting: Firebase App Hosting (Serverless)',
+      'Database: Firestore with pay-as-you-go model',
+      'Authentication: Firebase Authentication (Free tier)',
+      'AI: Genkit with Gemini (scales automatically)',
+      'Est. Cost: Minimal, scales with usage',
     ],
   },
   {
     value: 'phase2',
-    title: 'Phase 2 – Growth (2,000–10,000 users)',
+    title: 'Phase 2 – Growth (10,000 – 100,000 users)',
     items: [
-      'Migrate backend to DigitalOcean / Hetzner VPS',
-      'Use Docker containers & implement caching (Redis)',
-      'API Gateway for load balancing',
-      'Cost ≈ 10–15 DT / user',
+      'Infrastructure: Optimize Firestore indexes',
+      'Caching: Implement client-side & CDN caching',
+      'Functions: Monitor Cloud Functions for performance',
+      'Cost: Still pay-as-you-go, predictable scaling',
     ],
   },
   {
     value: 'phase3',
-    title: 'Phase 3 – Scale (10,000–1M users)',
+    title: 'Phase 3 – Scale (100,000 – 1M+ users)',
     items: [
-      'Microservices architecture (Node.js / Go)',
-      'Scalable databases (MongoDB Cluster, Redis)',
-      'CDN (Cloudflare) for static assets',
-      'Edge compute for TTS and AI caching',
-      'Cost ≈ <5 DT / user with optimized hosting',
+      'Database: Shard Firestore data if necessary',
+      'Architecture: Introduce dedicated microservices',
+      'Global Reach: Utilize Firebase Multi-region support',
+      'Cost: Economies of scale reduce per-user cost',
     ],
   },
 ];
 
 const costBreakdown = [
-    { component: 'Server (VPS)', description: '8-core / 16GB RAM', cost: '220 DT' },
-    { component: 'MongoDB Atlas', description: 'Shared cluster', cost: '80 DT' },
-    { component: 'Azure TTS', description: '50 hrs Derja voice', cost: '100 DT' },
-    { component: 'Gmail API (Free)', description: 'OAuth access', cost: '0 DT' },
-    { component: 'Domain & SSL', description: 'luca.tn', cost: '40 DT' },
-    { component: 'Backup + Security', description: 'Daily snapshots', cost: '30 DT' },
+    { component: 'Firebase Hosting', description: 'Serverless, scales to zero', cost: 'Pay-as-you-go' },
+    { component: 'Firestore', description: 'Generous free tier', cost: 'Pay-as-you-go' },
+    { component: 'Firebase Auth', description: 'Free up to 10k MAU', cost: 'Free Tier' },
+    { component: 'Cloud Functions', description: 'Generous free tier', cost: 'Pay-as-you-go' },
+    { component: 'Genkit / Gemini API', description: 'Scales with AI usage', cost: 'Pay-as-you-go' },
 ];
 
 const differentiators = [
@@ -67,8 +65,8 @@ const differentiators = [
     },
     {
         icon: Cloud,
-        title: 'Scalable Cloud-Ready Architecture',
-        description: 'Designed to grow from a small team to millions of users seamlessly.',
+        title: 'Massively Scalable Serverless Stack',
+        description: 'Designed to grow from one user to millions without manual intervention.',
     },
 ];
 
@@ -85,15 +83,15 @@ export function LandingBusiness() {
             <Card className="mt-12">
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2 font-headline text-2xl">
-                        <LineChart className="h-6 w-6 text-primary" /> Scalability Plan
+                        <TrendingUp className="h-6 w-6 text-primary" /> Plan for 1 Million Users
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
                     <Tabs defaultValue="phase1" className="w-full">
                         <TabsList className="grid w-full grid-cols-3">
-                            {scalabilityPhases.map(phase => (
-                                <TabsTrigger key={phase.value} value={phase.value}>Phase {phase.value.slice(-1)}</TabsTrigger>
-                            ))}
+                            <TabsTrigger value="phase1">Launch</TabsTrigger>
+                            <TabsTrigger value="phase2">Growth</TabsTrigger>
+                            <TabsTrigger value="phase3">Scale</TabsTrigger>
                         </TabsList>
                         {scalabilityPhases.map(phase => (
                             <TabsContent key={phase.value} value={phase.value}>
@@ -122,8 +120,8 @@ export function LandingBusiness() {
                 <div className="lg:col-span-3">
                     <Card>
                         <CardHeader>
-                            <CardTitle className="font-headline text-2xl">Estimated Cost Breakdown</CardTitle>
-                            <p className="text-sm text-muted-foreground">Per 2,000 users per month.</p>
+                            <CardTitle className="font-headline text-2xl">Cost-Efficient Model</CardTitle>
+                            <p className="text-sm text-muted-foreground">Serverless architecture minimizes idle costs.</p>
                         </CardHeader>
                         <CardContent>
                             <Table>
@@ -131,7 +129,7 @@ export function LandingBusiness() {
                                     <TableRow>
                                         <TableHead>Component</TableHead>
                                         <TableHead>Description</TableHead>
-                                        <TableHead className="text-right">Est. Monthly Cost</TableHead>
+                                        <TableHead className="text-right">Cost Model</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -144,7 +142,7 @@ export function LandingBusiness() {
                                     ))}
                                      <TableRow className="bg-muted/50 font-bold">
                                         <TableCell colSpan={2}>Total</TableCell>
-                                        <TableCell className="text-right">≈ 470 DT/month</TableCell>
+                                        <TableCell className="text-right">Scales from $0</TableCell>
                                     </TableRow>
                                 </TableBody>
                             </Table>
@@ -157,7 +155,7 @@ export function LandingBusiness() {
                             <CardTitle className="font-headline text-2xl">Key Differentiators</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                            {differentiators.slice(0, 2).map((item) => (
+                            {differentiators.map((item) => (
                                 <div key={item.title} className="flex items-start gap-4">
                                     <div className="mt-1 text-primary"><item.icon /></div>
                                     <div>

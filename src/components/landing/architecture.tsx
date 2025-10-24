@@ -11,7 +11,7 @@ const techStack = {
             "Framework: Next.js 15.3 (App Router)",
             "Language: TypeScript 5",
             "UI Library: React 18.3",
-            "Styling: Tailwind CSS + Radix UI",
+            "Styling: Tailwind CSS + ShadCN UI",
             "Design System: Plus Jakarta Sans",
             "Modes: Dark/Light themes",
             "Responsive: Mobile, tablet, desktop",
@@ -21,21 +21,21 @@ const techStack = {
         icon: Server,
         title: "Backend",
         items: [
-            "Database: MongoDB (Mongoose)",
-            "API Type: RESTful with Express",
-            "Auth System: NextAuth.js",
-            "Security: JWT, bcrypt, rate limiting",
-            "AI Layer: Google Genkit 1.20",
+            "Cloud: Firebase (App Hosting, Functions)",
+            "Database: Cloud Firestore",
+            "Auth System: Firebase Authentication",
+            "Security: Firebase Security Rules",
+            "AI Layer: Google Genkit & Gemini",
         ],
     },
     ai: {
         icon: BrainCircuit,
         title: "AI & Voice",
         items: [
-            "Speech-to-Text: Web Speech API",
-            "Text-to-Speech: Azure Speech Services",
-            "Local Voice Option: Microsoft Edge TTS",
-            "Language Support: Derja, French, English",
+            "Generative AI: Google Gemini Models",
+            "AI Orchestration: Google Genkit",
+            "Multilingual Support: Derja, French, English",
+            "Features: Summarization, Classification, Voice",
         ],
     },
 };
@@ -47,36 +47,26 @@ const devTools = {
         "Node.js 20 LTS",
         "pnpm",
         "Visual Studio Code",
-        "MongoDB Community Edition",
-        "MongoDB Compass",
+        "Firebase Local Emulator Suite",
+        "Genkit Developer UI",
         "Postman",
         "Git + GitHub",
         "Figma",
-        "Python + Edge TTS",
     ],
 }
 
 const projectStructureCode = `
 luca-platform/
-├── frontend/                # Next.js app
-│   ├── app/                 # App Router pages
-│   ├── components/          # Reusable UI elements
-│   ├── contexts/            # App contexts (auth, AI)
-│   ├── hooks/               # Custom React hooks
-│   └── public/              # Static assets
+├── src/
+│   ├── app/                 # Next.js App Router
+│   ├── components/          # Reusable UI components
+│   ├── lib/                 # Utilities & data
+│   ├── firebase/            # Firebase config & hooks
+│   └── ai/                  # Genkit flows & AI logic
 │
-├── backend/                 # API & services
-│   ├── routes/              # API routes
-│   ├── models/              # MongoDB models
-│   ├── controllers/         # Logic layers
-│   └── services/            # Gmail, AI, TTS services
+├── public/                  # Static assets
 │
-├── ai/                      # AI and Derja processing
-│   ├── genkit/              # Google Genkit pipelines
-│   ├── models/              # AI logic (summaries, etc)
-│   └── voice/               # Voice assistant
-│
-└── docs/                    # Documentation
+└── firebase.json            # Firebase deployment config
 `.trim();
 
 
@@ -86,7 +76,7 @@ export function LandingArchitecture() {
             <div className="text-center">
                 <h2 className="font-headline text-3xl font-bold md:text-4xl">Architecture & Technology</h2>
                 <p className="mt-4 text-lg text-muted-foreground">
-                    A robust, scalable, and modern stack built for performance and intelligence.
+                    A robust, scalable, and modern stack built for performance and intelligence on Google Cloud.
                 </p>
             </div>
             <div className="mt-12 grid gap-8 md:grid-cols-3">

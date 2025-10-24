@@ -47,18 +47,18 @@ const features = [
     {
         icon: Lock,
         title: "Security & Privacy",
-        description: "OAuth2, JWT, password hashing, and GDPR-compliant data handling.",
+        description: "Firebase Authentication, Security Rules, and privacy-first data handling.",
     },
 ];
 
 const colors = [
-    { name: 'Primary', hex: '#3B82F6', className: 'bg-[#3B82F6]' },
-    { name: 'Accent', hex: '#A855F7', className: 'bg-[#A855F7]' },
-    { name: 'Background (Light)', hex: '#F9FAFB', className: 'bg-[#F9FAFB] border' },
-    { name: 'Background (Dark)', hex: '#0F172A', className: 'bg-[#0F172A]' },
-    { name: 'Success', hex: '#22C55E', className: 'bg-[#22C55E]' },
-    { name: 'Warning', hex: '#FACC15', className: 'bg-[#FACC15]' },
-    { name: 'Error', hex: '#EF4444', className: 'bg-[#EF4444]' },
+    { name: 'Primary', hex: '#E53935', className: 'bg-[#E53935]' },
+    { name: 'Foreground', hex: '#1A1818', className: 'bg-[#1A1818]' },
+    { name: 'Background', hex: '#F7F1EA', className: 'bg-[#F7F1EA] border' },
+    { name: 'Card', hex: '#FFFCFA', className: 'bg-[#FFFCFA] border' },
+    { name: 'Dark BG', hex: '#1C1917', className: 'bg-[#1C1917]' },
+    { name: 'Dark Card', hex: '#221F1C', className: 'bg-[#221F1C]' },
+    { name: 'Accent', hex: '#B72320', className: 'bg-[#B72320]' },
 ];
 
 export function LandingFeatures() {
@@ -95,7 +95,7 @@ export function LandingFeatures() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <p className="text-muted-foreground">
-                        A clean, modern, and accessible design system built for focus and productivity.
+                        A clean, modern, and accessible design system inspired by Tunisian identity.
                         Features <span className="font-medium text-foreground">Plus Jakarta Sans</span> and <span className="font-medium text-foreground">Space Grotesk</span> typography.
                     </p>
                     <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 md:grid-cols-7">
