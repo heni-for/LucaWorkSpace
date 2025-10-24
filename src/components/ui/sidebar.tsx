@@ -1,3 +1,4 @@
+
 "use client"
 
 import * as React from "react"
@@ -558,16 +559,16 @@ const SidebarMenuButton = React.forwardRef<
     const Comp = asChild ? Slot : "button"
 
     const button = (
-        <Comp
-          ref={ref}
-          data-sidebar="menu-button"
-          data-size={size}
-          data-active={isActive}
-          className={cn(sidebarMenuButtonVariants({ variant, size, className }))}
-          {...props}
-        >
-          {children}
-        </Comp>
+      <Comp
+        ref={ref}
+        data-sidebar="menu-button"
+        data-size={size}
+        data-active={isActive}
+        className={cn(sidebarMenuButtonVariants({ variant, size, className }))}
+        {...props}
+      >
+        {children}
+      </Comp>
     );
 
     if (!tooltip || isMobile || state === 'expanded') {
@@ -760,5 +761,3 @@ export {
   SidebarTrigger,
   useSidebar,
 }
-
-    
