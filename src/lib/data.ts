@@ -6,11 +6,14 @@ export type Email = {
   body: string;
   date: string;
   read: boolean;
+  starred?: boolean;
+  folder?: 'inbox' | 'sent' | 'drafts' | 'trash';
   category?: 'Work' | 'Personal' | 'Promotions';
   priority?: 'High' | 'Medium' | 'Low';
 };
 
 export const emails: Email[] = [
+  // Inbox emails
   {
     id: '1',
     sender: 'Amira Gharbi',
@@ -19,6 +22,8 @@ export const emails: Email[] = [
     body: 'Hello team, the latest build for Project Phoenix is now live on the staging server. Please conduct a thorough review and report any bugs by EOD Friday. The focus is on the new voice command integration. Thanks!',
     date: '3 minutes ago',
     read: false,
+    starred: true,
+    folder: 'inbox',
     category: 'Work',
     priority: 'High',
   },
@@ -30,6 +35,10 @@ export const emails: Email[] = [
     body: 'Approved. Please proceed with the proposed budget for the Q3 campaign. Let\'s schedule a follow-up meeting for next week to discuss the initial results.',
     date: '28 minutes ago',
     read: false,
+    starred: false,
+    folder: 'inbox',
+    category: 'Work',
+    priority: 'Medium',
   },
   {
     id: '3',
@@ -39,7 +48,10 @@ export const emails: Email[] = [
     body: 'Yassine Ben Ali, CEO at InnovateTN, wants to connect with you on LinkedIn. Knowing Yassine might help you build your professional network.',
     date: '1 hour ago',
     read: true,
+    starred: false,
+    folder: 'inbox',
     category: 'Promotions',
+    priority: 'Low',
   },
   {
     id: '4',
@@ -49,6 +61,8 @@ export const emails: Email[] = [
     body: 'Hey! Long time no see. Are you free this weekend? A few of us are planning to go to the beach on Saturday. Let me know if you can make it!',
     date: '4 hours ago',
     read: true,
+    starred: true,
+    folder: 'inbox',
     category: 'Personal',
     priority: 'Medium',
   },
@@ -60,10 +74,12 @@ export const emails: Email[] = [
     body: 'A new issue (#42) has been opened in the `luca-platform/frontend` repository: "UI bug on mobile calendar view". Please review and assign.',
     date: 'Yesterday',
     read: true,
+    starred: false,
+    folder: 'inbox',
     category: 'Work',
     priority: 'High',
   },
-    {
+  {
     id: '6',
     sender: 'Vercel',
     avatar: 'V',
@@ -71,6 +87,81 @@ export const emails: Email[] = [
     body: 'Your latest deployment for the project `luca-reimagined` is now live. The build completed in 1m 32s. You can view the deployment at luca-reimagined.vercel.app.',
     date: 'Yesterday',
     read: true,
+    starred: false,
+    folder: 'inbox',
+    category: 'Work',
+    priority: 'Low',
+  },
+  
+  // Sent emails
+  {
+    id: '7',
+    sender: 'You',
+    avatar: 'ME',
+    subject: 'Re: Project Phoenix Update',
+    body: 'Thanks Amira! I\'ll review the build and provide feedback by Friday. The voice command integration looks promising.',
+    date: '2 hours ago',
+    read: true,
+    starred: false,
+    folder: 'sent',
+    category: 'Work',
+    priority: 'Medium',
+  },
+  {
+    id: '8',
+    sender: 'You',
+    avatar: 'ME',
+    subject: 'Meeting Follow-up',
+    body: 'Hi team, following up on our discussion about the Q3 roadmap. Please review the attached document and let me know your thoughts.',
+    date: '1 day ago',
+    read: true,
+    starred: true,
+    folder: 'sent',
+    category: 'Work',
+    priority: 'High',
+  },
+  
+  // Drafts
+  {
+    id: '9',
+    sender: 'You',
+    avatar: 'ME',
+    subject: 'Proposal for New Feature',
+    body: 'I\'d like to propose a new feature for the platform that would allow users to...',
+    date: '2 days ago',
+    read: true,
+    starred: false,
+    folder: 'drafts',
+    category: 'Work',
+    priority: 'Medium',
+  },
+  {
+    id: '10',
+    sender: 'You',
+    avatar: 'ME',
+    subject: 'Vacation Request',
+    body: 'Hi HR team, I would like to request vacation time for the week of...',
+    date: '3 days ago',
+    read: true,
+    starred: false,
+    folder: 'drafts',
+    category: 'Personal',
+    priority: 'Low',
+  },
+  
+  // Trash
+  {
+    id: '11',
+    sender: 'Spam Sender',
+    avatar: 'SP',
+    subject: 'You\'ve won $1000!',
+    body: 'Congratulations! You\'ve been selected to receive $1000. Click here to claim your prize...',
+    date: '1 week ago',
+    read: true,
+    starred: false,
+    folder: 'trash',
+    category: 'Promotions',
+    priority: 'Low',
   },
 ];
 

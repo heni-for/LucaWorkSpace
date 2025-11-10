@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Permission Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .video-container {
+            width: 100%;
+            max-width: 640px;
+            margin: 20px auto;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .status {
+            font-weight: bold;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎥 Camera Permission Test</h1>
+        <p>This page will help you test camera permissions and debug any issues.</p>
+        
+        <div id="status" class="status">Ready to test camera...</div>
+        
+        <div class="video-container">
+            <video id="video" autoplay muted playsinline style="display: none;"></video>
+            <div id="placeholder" style="padding: 50px; text-align: center; color: #666;">
+                Click "Start Camera" to test camera access
+            </div>
+        </div>
+        
+        <div style="text-align: center;">
+            <button id="startBtn" onclick="startCamera()">Start Camera</button>
+            <button id="stopBtn" onclick="stopCamera()" disabled>Stop Camera</button>
+            <button onclick="checkPermissions()">Check Permissions</button>
+        </div>
+        
+        <div id="messages"></div>
+        
+        <div class="info">
+            <h3>🔧 Troubleshooting Steps:</h3>
+            <ol>
+                <li><strong>Click "Start Camera"</strong> - This should show a permission dialog</li>
+                <li><strong>Click "Allow"</strong> when the browser asks for camera permission</li>
+                <li><strong>Check browser settings</strong> if no dialog appears</li>
+                <li><strong>Close other apps</strong> that might be using the camera (Zoom, Teams, etc.)</li>
+                <li><strong>Try a different browser</strong> if issues persist</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        let stream = null;
+        const video = document.getElementById('video');
+        const placeholder = document.getElementById('placeholder');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const status = document.getElementById('status');
+        const messages = document.getElementById('messages');
+
+        function addMessage(text, type = 'info') {
+            const div = document.createElement('div');
+            div.className = type;
+            div.innerHTML = text;
+            messages.appendChild(div);
+        }
+
+        function updateStatus(text) {
+            status.textContent = text;
+        }
+
+        async function startCamera() {
+            try {
+                updateStatus('🎥 Requesting camera permission...');
+                addMessage('🎥 Requesting camera permission...', 'info');
+                
+                // Check browser support
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    throw new Error('Your browser does not support camera access. Please use Chrome, Firefox, or Edge.');
+                }
+
+                // Request camera access
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        width: { ideal: 1280, min: 640 },
+                        height: { ideal: 720, min: 480 },
+                        facingMode: 'user'
+                    },
+                    audio: true
+                });
+
+                // Show video
+                video.srcObject = stream;
+                video.style.display = 'block';
+                placeholder.style.display = 'none';
+                
+                // Update UI
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+                
+                updateStatus('✅ Camera working!');
+                addMessage('✅ Camera access granted successfully!', 'success');
+                addMessage(`📹 Video tracks: ${stream.getVideoTracks().length}`, 'success');
+                addMessage(`🎤 Audio tracks: ${stream.getAudioTracks().length}`, 'success');
+                
+                // Log track details
+                const videoTrack = stream.getVideoTracks()[0];
+                if (videoTrack) {
+                    addMessage(`📹 Video settings: ${JSON.stringify(videoTrack.getSettings())}`, 'info');
+                }
+
+            } catch (error) {
+                console.error('Camera error:', error);
+                updateStatus('❌ Camera error');
+                
+                let errorMessage = '';
+                if (error.name === 'NotAllowedError') {
+                    errorMessage = '❌ Camera access denied. Please click "Allow" when the browser asks for permission.';
+                } else if (error.name === 'NotFoundError') {
+                    errorMessage = '❌ No camera found. Please connect a camera device.';
+                } else if (error.name === 'NotReadableError') {
+                    errorMessage = '❌ Camera is being used by another application. Please close Zoom, Teams, or other video apps.';
+                } else {
+                    errorMessage = `❌ Camera error: ${error.message}`;
+                }
+                
+                addMessage(errorMessage, 'error');
+            }
+        }
+
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => {
+                    track.stop();
+                    console.log('Stopped track:', track.kind);
+                });
+                stream = null;
+            }
+            
+            video.style.display = 'none';
+            placeholder.style.display = 'block';
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            
+            updateStatus('🛑 Camera stopped');
+            addMessage('🛑 Camera stopped', 'info');
+        }
+
+        async function checkPermissions() {
+            try {
+                const permissions = await navigator.permissions.query({ name: 'camera' });
+                addMessage(`📋 Camera permission status: ${permissions.state}`, 'info');
+                
+                if (permissions.state === 'denied') {
+                    addMessage('❌ Camera permission is denied. Please check your browser settings.', 'error');
+                } else if (permissions.state === 'granted') {
+                    addMessage('✅ Camera permission is granted.', 'success');
+                } else {
+                    addMessage('❓ Camera permission is not set. Click "Start Camera" to request permission.', 'info');
+                }
+            } catch (error) {
+                addMessage(`❌ Could not check permissions: ${error.message}`, 'error');
+            }
+        }
+
+        // Check browser support on load
+        window.onload = function() {
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                addMessage('❌ Your browser does not support camera access. Please use Chrome, Firefox, or Edge.', 'error');
+                startBtn.disabled = true;
+            } else {
+                addMessage('✅ Browser supports camera access.', 'success');
+            }
+        };
+    </script>
+</body>
+</html>

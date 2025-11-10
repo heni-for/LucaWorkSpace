@@ -25,7 +25,14 @@ import {
   LifeBuoy,
   PenSquare,
   FolderKanban,
-  Users
+  Users,
+  Video,
+  Folder,
+  User,
+  Brain,
+  GraduationCap,
+  Mic,
+  MessageSquare
 } from 'lucide-react';
 import { Button } from '../ui/button';
 
@@ -88,6 +95,12 @@ export function AppSidebar() {
               <span>Calendar</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton href="/meetings" isActive={isActive('/meetings')} tooltip="Meetings">
+              <Video />
+              <span>Meetings</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
            <SidebarMenuItem>
             <SidebarMenuButton href="/whiteboard" isActive={isActive('/whiteboard')} tooltip="Whiteboard">
               <PenSquare />
@@ -107,9 +120,45 @@ export function AppSidebar() {
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
+            <SidebarMenuButton href="/projects" isActive={isActive('/projects')} tooltip="Projects">
+              <Folder />
+              <span>Projects</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton href="/profile" isActive={isActive('/profile')} tooltip="Personal Profile">
+              <User />
+              <span>Personal Profile</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton href="/memory" isActive={isActive('/memory')} tooltip="Memory">
+              <Brain />
+              <span>Memory</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton href="/voice-assistant" isActive={isActive('/voice-assistant')} tooltip="Voice Assistant">
+              <Mic />
+              <span>Voice Assistant</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton href="/ai-chat" isActive={isActive('/ai-chat')} tooltip="AI Chat">
+              <MessageSquare />
+              <span>AI Chat</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
             <SidebarMenuButton href="/reports" isActive={isActive('/reports')} tooltip="Reports">
               <LineChart />
               <span>Reports</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton href="/education" isActive={isActive('/education')} tooltip="Education">
+              <GraduationCap />
+              <span>Education</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

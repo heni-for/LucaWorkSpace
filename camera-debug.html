@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔧 Camera Debug Tool</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #333;
+            margin: 0;
+            font-size: 2.5em;
+        }
+        .video-container {
+            width: 100%;
+            max-width: 640px;
+            margin: 20px auto;
+            background: #000;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #c62828;
+        }
+        .success {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #2e7d32;
+        }
+        .info {
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #1565c0;
+        }
+        .warning {
+            background: #fff3e0;
+            color: #ef6c00;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #ef6c00;
+        }
+        .status {
+            font-weight: bold;
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .status.ready { background: #e8f5e8; color: #2e7d32; }
+        .status.loading { background: #fff3e0; color: #ef6c00; }
+        .status.error { background: #ffebee; color: #c62828; }
+        .status.success { background: #e8f5e8; color: #2e7d32; }
+        .debug-info {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .step {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            border-left: 3px solid #4CAF50;
+        }
+        .step h4 {
+            margin: 0 0 5px 0;
+            color: #333;
+        }
+        .step p {
+            margin: 0;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔧 Camera Debug Tool</h1>
+            <p>This tool will help diagnose and fix camera permission issues</p>
+        </div>
+        
+        <div id="status" class="status ready">Ready to test camera...</div>
+        
+        <div class="video-container">
+            <video id="video" autoplay muted playsinline style="display: none;"></video>
+            <div id="placeholder" style="padding: 50px; text-align: center; color: #666; font-size: 18px;">
+                Click "Start Camera Test" to begin
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button id="startBtn" onclick="startCameraTest()">🎥 Start Camera Test</button>
+            <button id="stopBtn" onclick="stopCamera()" disabled>🛑 Stop Camera</button>
+            <button onclick="clearPermissions()">🧹 Clear Permissions</button>
+            <button onclick="checkSystem()">🔍 Check System</button>
+        </div>
+        
+        <div id="messages"></div>
+        
+        <div class="info">
+            <h3>🔧 Troubleshooting Steps:</h3>
+            <div class="step">
+                <h4>Step 1: Close Other Apps</h4>
+                <p>Close Zoom, Teams, Skype, Discord, and any other video applications</p>
+            </div>
+            <div class="step">
+                <h4>Step 2: Reset Browser Permissions</h4>
+                <p>Click the camera icon in your browser address bar and select "Allow"</p>
+            </div>
+            <div class="step">
+                <h4>Step 3: Clear Browser Cache</h4>
+                <p>Clear browsing data and cookies for this site</p>
+            </div>
+            <div class="step">
+                <h4>Step 4: Try Different Browser</h4>
+                <p>Test with Chrome, Firefox, or Edge</p>
+            </div>
+            <div class="step">
+                <h4>Step 5: Check Windows Settings</h4>
+                <p>Go to Windows Settings → Privacy → Camera and ensure apps can access camera</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let stream = null;
+        const video = document.getElementById('video');
+        const placeholder = document.getElementById('placeholder');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const status = document.getElementById('status');
+        const messages = document.getElementById('messages');
+
+        function updateStatus(text, type = 'ready') {
+            status.textContent = text;
+            status.className = `status ${type}`;
+        }
+
+        function addMessage(text, type = 'info') {
+            const div = document.createElement('div');
+            div.className = type;
+            div.innerHTML = text;
+            messages.appendChild(div);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function addDebugInfo(text) {
+            const debugDiv = document.createElement('div');
+            debugDiv.className = 'debug-info';
+            debugDiv.textContent = text;
+            messages.appendChild(debugDiv);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        async function startCameraTest() {
+            try {
+                updateStatus('🎥 Starting camera test...', 'loading');
+                addMessage('🎥 Starting comprehensive camera test...', 'info');
+                
+                // Check browser support
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    throw new Error('Your browser does not support camera access. Please use Chrome, Firefox, or Edge.');
+                }
+
+                addDebugInfo('✅ Browser supports camera access');
+
+                // Strategy 1: Minimal video only
+                try {
+                    addMessage('🎯 Strategy 1: Testing video only...', 'info');
+                    stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    addMessage('✅ Strategy 1 SUCCESS: Video only', 'success');
+                } catch (error) {
+                    addMessage('❌ Strategy 1 failed: ' + error.message, 'error');
+                    
+                    // Strategy 2: Audio only
+                    try {
+                        addMessage('🎯 Strategy 2: Testing audio only...', 'info');
+                        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                        addMessage('✅ Strategy 2 SUCCESS: Audio only', 'success');
+                    } catch (audioError) {
+                        addMessage('❌ Strategy 2 failed: ' + audioError.message, 'error');
+                        
+                        // Strategy 3: Enumerate devices
+                        try {
+                            addMessage('🎯 Strategy 3: Enumerating devices...', 'info');
+                            const devices = await navigator.mediaDevices.enumerateDevices();
+                            addDebugInfo('📱 Available devices: ' + JSON.stringify(devices, null, 2));
+                            
+                            const videoDevices = devices.filter(d => d.kind === 'videoinput');
+                            const audioDevices = devices.filter(d => d.kind === 'audioinput');
+                            
+                            addMessage(`📹 Found ${videoDevices.length} video devices`, 'info');
+                            addMessage(`🎤 Found ${audioDevices.length} audio devices`, 'info');
+                            
+                            if (videoDevices.length > 0) {
+                                addMessage('🎯 Strategy 3: Using specific video device...', 'info');
+                                stream = await navigator.mediaDevices.getUserMedia({
+                                    video: { deviceId: videoDevices[0].deviceId }
+                                });
+                                addMessage('✅ Strategy 3 SUCCESS: Specific device', 'success');
+                            } else {
+                                throw new Error('No video devices found');
+                            }
+                        } catch (deviceError) {
+                            addMessage('❌ Strategy 3 failed: ' + deviceError.message, 'error');
+                            
+                            // Strategy 4: Different constraints
+                            try {
+                                addMessage('🎯 Strategy 4: Testing different constraints...', 'info');
+                                stream = await navigator.mediaDevices.getUserMedia({
+                                    video: {
+                                        width: { min: 320, ideal: 640 },
+                                        height: { min: 240, ideal: 480 },
+                                        frameRate: { min: 15, ideal: 30 }
+                                    }
+                                });
+                                addMessage('✅ Strategy 4 SUCCESS: Different constraints', 'success');
+                            } catch (constraintError) {
+                                addMessage('❌ Strategy 4 failed: ' + constraintError.message, 'error');
+                                throw constraintError;
+                            }
+                        }
+                    }
+                }
+
+                // Show video
+                video.srcObject = stream;
+                video.style.display = 'block';
+                placeholder.style.display = 'none';
+                
+                // Update UI
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+                
+                updateStatus('🎉 Camera working!', 'success');
+                addMessage('🎉 Camera test SUCCESSFUL!', 'success');
+                
+                // Log detailed information
+                addDebugInfo('📹 Video tracks: ' + stream.getVideoTracks().length);
+                addDebugInfo('🎤 Audio tracks: ' + stream.getAudioTracks().length);
+                
+                stream.getVideoTracks().forEach((track, index) => {
+                    addDebugInfo(`📹 Video track ${index}: ${JSON.stringify(track.getSettings(), null, 2)}`);
+                });
+
+            } catch (error) {
+                console.error('Camera test failed:', error);
+                updateStatus('❌ Camera test failed', 'error');
+                
+                let errorMessage = '';
+                if (error.name === 'NotAllowedError') {
+                    errorMessage = '❌ PERMISSION DENIED!\n\nTry these solutions:\n1. 🔄 Refresh page (Ctrl+F5)\n2. 🚫 Close all video apps (Zoom, Teams, Skype)\n3. 🔧 Reset browser permissions\n4. 🧹 Clear browser cache\n5. 🔄 Try different browser\n6. 🔄 Try incognito mode';
+                } else if (error.name === 'NotFoundError') {
+                    errorMessage = '❌ NO CAMERA FOUND!\n\n1. 🔌 Check camera connection\n2. 🔧 Update camera drivers\n3. 🖥️ Test Windows Camera app\n4. 🔄 Restart computer';
+                } else if (error.name === 'NotReadableError') {
+                    errorMessage = '❌ CAMERA IN USE!\n\n1. 🚫 Close Zoom, Teams, Skype, Discord\n2. 🚫 Close other browser tabs\n3. 🔄 Restart browser\n4. 🔄 Restart computer';
+                } else {
+                    errorMessage = `❌ CAMERA ERROR: ${error.message}\n\nTry:\n1. 🔄 Refresh page\n2. 🔄 Restart browser\n3. 🔄 Restart computer`;
+                }
+                
+                addMessage(errorMessage, 'error');
+            }
+        }
+
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => {
+                    track.stop();
+                    console.log('Stopped track:', track.kind);
+                });
+                stream = null;
+            }
+            
+            video.style.display = 'none';
+            placeholder.style.display = 'block';
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            
+            updateStatus('🛑 Camera stopped', 'ready');
+            addMessage('🛑 Camera stopped', 'info');
+        }
+
+        function clearPermissions() {
+            addMessage('🧹 Attempting to clear permissions...', 'warning');
+            addMessage('To clear permissions manually:\n\n1. Click the camera icon in address bar\n2. Select "Block" then "Allow"\n3. Or go to browser settings → Site permissions → Camera\n4. Remove localhost:9002 and refresh', 'info');
+        }
+
+        async function checkSystem() {
+            addMessage('🔍 Checking system information...', 'info');
+            
+            // Check browser info
+            addDebugInfo('🌐 Browser: ' + navigator.userAgent);
+            addDebugInfo('🔗 Protocol: ' + window.location.protocol);
+            addDebugInfo('🏠 Host: ' + window.location.host);
+            
+            // Check media device support
+            addDebugInfo('📱 MediaDevices supported: ' + !!navigator.mediaDevices);
+            addDebugInfo('🎥 getUserMedia supported: ' + !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia));
+            
+            // Check permissions API
+            try {
+                const cameraPermission = await navigator.permissions.query({ name: 'camera' });
+                addDebugInfo('📋 Camera permission: ' + cameraPermission.state);
+            } catch (e) {
+                addDebugInfo('📋 Camera permission: Could not check');
+            }
+            
+            try {
+                const micPermission = await navigator.permissions.query({ name: 'microphone' });
+                addDebugInfo('🎤 Microphone permission: ' + micPermission.state);
+            } catch (e) {
+                addDebugInfo('🎤 Microphone permission: Could not check');
+            }
+            
+            // Enumerate devices
+            try {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                addDebugInfo('📱 Total devices: ' + devices.length);
+                devices.forEach((device, index) => {
+                    addDebugInfo(`📱 Device ${index}: ${device.kind} - ${device.label || 'Unknown'}`);
+                });
+            } catch (e) {
+                addDebugInfo('📱 Could not enumerate devices: ' + e.message);
+            }
+        }
+
+        // Check system on load
+        window.onload = function() {
+            addMessage('🚀 Camera Debug Tool loaded', 'success');
+            checkSystem();
+        };
+    </script>
+</body>
+</html>

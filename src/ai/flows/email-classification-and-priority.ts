@@ -47,7 +47,22 @@ const classifyEmailFlow = ai.defineFlow(
     outputSchema: ClassifyEmailOutputSchema,
   },
   async input => {
-    const {output} = await classifyEmailPrompt(input);
-    return output!;
+    try {
+      const {output} = await classifyEmailPrompt(input);
+      return output! as ClassifyEmailOutput;
+    } catch (err) {
+      // Fallback classification to avoid breaking the UI when AI API fails
+      const text = input.emailContent.toLowerCase();
+      const isWork = /meeting|invoice|project|deadline|client|contract/.test(text);
+      const isPromo = /sale|promo|discount|offer|subscribe|newsletter/.test(text);
+      const category: 'Work' | 'Personal' | 'Promotions' = isWork ? 'Work' : isPromo ? 'Promotions' : 'Personal';
+      const priority: 'High' | 'Medium' | 'Low' = /urgent|asap|immediately|important/.test(text)
+        ? 'High'
+        : /soon|this week|reminder/.test(text)
+        ? 'Medium'
+        : 'Low';
+      const summary = input.emailContent.slice(0, 160);
+      return { category, priority, summary } as ClassifyEmailOutput;
+    }
   }
 );

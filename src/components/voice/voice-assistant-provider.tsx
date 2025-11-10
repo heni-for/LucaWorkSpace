@@ -52,7 +52,7 @@ export function VoiceAssistantProvider({ children }: { children: React.ReactNode
     }
     setInterimTranscript(interim);
     if (finalTranscript) {
-      setTranscript(get().voice.transcript + finalTranscript);
+      setTranscript(useStore.getState().voice.transcript + finalTranscript);
     }
   }, [setInterimTranscript, setTranscript, useStore.getState]);
 
